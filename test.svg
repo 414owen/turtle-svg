@@ -1,0 +1,10 @@
+<svg width=500 height=500 xmlns='http://www.w3.org/2000/svg'>
+<line x1='250' y1='250' x2='350' y2='250 stroke='#000' stroke-width='1'>
+Turtle { position: Point { x: 350, y: 250 }, bearing: 0, pen: Pen { thickness: 1, color: "#000", down: true } }
+Turtle { position: Point { x: 350, y: 250 }, bearing: 0, pen: Pen { thickness: 3, color: "#000", down: true } }
+<line x1='350' y1='250' x2='370' y2='250 stroke='#000' stroke-width='3'>
+Turtle { position: Point { x: 370, y: 250 }, bearing: 0, pen: Pen { thickness: 3, color: "#000", down: true } }
+Turtle { position: Point { x: 370, y: 250 }, bearing: 0, pen: Pen { thickness: 3, color: "#ff0000", down: true } }
+<line x1='370' y1='250' x2='400' y2='250 stroke='#ff0000' stroke-width='3'>
+Turtle { position: Point { x: 400, y: 250 }, bearing: 0, pen: Pen { thickness: 3, color: "#ff0000", down: true } }
+</svg>
