@@ -1,5 +1,7 @@
-fd 50
+fd 70
 pc #ff0000
-ps 20
+fd 70
 ps 3
-fd 20
+fd 70
+lt 100
+fd 70

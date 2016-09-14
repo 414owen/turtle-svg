@@ -37,6 +37,8 @@ fn main() {
                     );
                 }
             },
+            "lt" => turtle.bearing = turtle.bearing + elems.next().unwrap().parse::<f64>().unwrap(),
+            "rt" => turtle.bearing = turtle.bearing - elems.next().unwrap().parse::<f64>().unwrap(),
             "pu" => turtle.pen.down = false,
             "pd" => turtle.pen.down = true,
             "ps" => turtle.pen.thickness = elems.next().unwrap().parse::<i32>().unwrap(),
@@ -54,7 +56,10 @@ fn main() {
 
 fn new_pos(point: &Point, bearing: f64, amount: i32) -> Point {
     let dir = bearing / 180.0f64 * PI;
-    Point { x: point.x + ((amount as f64 * dir.cos()) as i32), y: point.y + ((amount as f64 * dir.sin()) as i32) }
+    Point { 
+        x: point.x + ((amount as f64 * dir.cos()) as i32),
+        y: point.y - ((amount as f64 * dir.sin()) as i32)
+    }
 }
 
 /*enum Cmd {
