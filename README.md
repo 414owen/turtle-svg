@@ -13,6 +13,14 @@ Generated with the spirals program (included), with these arguments:
 ![Rust -> Turtle -> SVG]
 (https://414owen.github.io/res/turtle/spiral.svg)
 
+## To build
+
+```bash
+cargo build --release
+```
+
+This will put turtle-svg and all generator programs in target/release/
+
 ## Commands
 
 All commands must be on a newline. All parameters must be space-separated.  
