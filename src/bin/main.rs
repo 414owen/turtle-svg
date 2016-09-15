@@ -1,12 +1,11 @@
 extern crate getopts;
 use getopts::Options;
-use std::env;
 use std::fs::File;
 use std::io::{self, Read, Write};
 use std::f64::consts::PI;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let args: Vec<String> = std::env::args().collect();
     let program = args[0].clone();
     let mut opts = Options::new();
     opts.optopt("o", "output", "set output file name", "NAME");
