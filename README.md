@@ -65,5 +65,5 @@ If you have a program that generates turtle script, you can simply pipe the
 output into turtle-svg:
 
 ```bash
-python my-fancy-script.py | turtle-svg > outsvg
+python my-fancy-script.py | turtle-svg > out.svg
 ```
