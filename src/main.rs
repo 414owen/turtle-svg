@@ -1,9 +1,43 @@
-use std::io::prelude::*;
-use std::io;
+extern crate getopts;
+use getopts::Options;
+use std::env;
+use std::fs::File;
+use std::io::{self, Read, Write};
 use std::f64::consts::PI;
 
 fn main() {
-    let stdin = io::stdin();
+    let args: Vec<String> = env::args().collect();
+    let program = args[0].clone();
+    let mut opts = Options::new();
+    opts.optopt("o", "output", "set output file name", "NAME");
+    opts.optopt("i", "input", "read turtle script from file", "NAME");
+    opts.optflag("h", "help", "print this help menu");
+    let matches = match opts.parse(&args[1..]) {
+        Ok(m) => { m }
+        Err(f) => { panic!(f.to_string()) }
+    };
+    if matches.opt_present("h") {
+        print_usage(&program, opts);
+        return;
+    }
+    init_in(matches);
+}
+
+fn init_in(matches: getopts::Matches) {
+    match matches.opt_str("i") {
+        Some(filename) =>  init_out(File::open(filename).expect("Couldn't open input file."), matches),
+        _ => init_out(io::stdin(), matches),
+    };
+}
+
+fn init_out<R: Read>(mut in_port: R, matches: getopts::Matches) {
+    match matches.opt_str("o") {
+        Some(filename) => run(in_port, File::create(filename).expect("Couln't open output file")),
+        _ => run(in_port, io::stdout()),
+    };
+}
+
+fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W) {
     let mut line_num = 0;
     let width = 500;
     let height = 500;
@@ -17,12 +51,13 @@ fn main() {
         }
     };
 
-    let mut out_port = io::stdout();
+    let mut input_buf = Vec::new();
+    in_port.read_to_end(&mut input_buf);
+    let input = std::str::from_utf8(&input_buf).unwrap();
     println!("<svg width='{}' height='{}' xmlns='http://www.w3.org/2000/svg'>", width, height);
-    for line in stdin.lock().lines() {
+    for line in input.lines() {
         line_num = line_num + 1;
-        let lineuw = line.unwrap();
-        let mut elems = lineuw.split(' ');
+        let mut elems = line.split(' ');
         let cmd = elems.next().unwrap();
         match cmd {
             "fd" => {
@@ -44,7 +79,7 @@ fn main() {
             "ps" => turtle.pen.thickness = elems.next().unwrap().parse::<i32>().unwrap(),
             "pc" => turtle.pen.color = elems.next().unwrap().to_string(),
             _ => {
-                write!(out_port, "Invalid input on line {}:\n{}\n", line_num, lineuw);
+                write!(out_port, "Invalid input on line {}:\n{}\n", line_num, line);
                 out_port.flush();
                 std::process::exit(0);
             },
@@ -53,6 +88,12 @@ fn main() {
     write!(out_port, "</svg>\n");
     out_port.flush();
 }
+
+fn print_usage(program: &str, opts: Options) {
+    let brief = format!("Usage: {} [options]", program);
+    print!("{}", opts.usage(&brief));
+}
+
 
 fn new_pos(point: &Point, bearing: f64, amount: i32) -> Point {
     let dir = bearing / 180.0f64 * PI;
