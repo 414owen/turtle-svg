@@ -51,10 +51,9 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W) {
         }
     };
 
-    let mut input_buf = Vec::new();
-    in_port.read_to_end(&mut input_buf);
-    let input = std::str::from_utf8(&input_buf).unwrap();
-    println!("<svg width='{}' height='{}' xmlns='http://www.w3.org/2000/svg'>", width, height);
+    let mut input = String::new();
+    in_port.read_to_string(&mut input);
+    write!(out_port, "<svg width='{}' height='{}' xmlns='http://www.w3.org/2000/svg'>", width, height);
     for line in input.lines() {
         line_num = line_num + 1;
         let mut elems = line.split(' ');
