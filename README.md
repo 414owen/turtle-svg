@@ -11,7 +11,7 @@ Generated with the spirals program (included), with these arguments:
 ```
 
 ![Rust -> Turtle -> SVG]
-(outputs/spiral.svg)
+(https://414owen.github.io/res/turtle/spiral.svg)
 
 ## Commands
 
