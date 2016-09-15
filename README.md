@@ -19,7 +19,7 @@ Generated with the spirals program (included), with these arguments:
 cargo build --release
 ```
 
-This will put turtle-svg and all generator programs in target/release/
+This will put turtle-svg and all generator programs in `target/release/`.
 
 ## Commands
 
