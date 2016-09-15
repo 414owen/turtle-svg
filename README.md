@@ -1,5 +1,17 @@
-# Turtle Graphics -> SVG
+# Turtle -> SVG
+
 A turtle graphics interpreter that outputs SVG
+
+## Example
+
+Generated with the spirals program (included), with these arguments:
+
+```bash
+./spiral -i 200 -l 10 -a 91 | turtle-svg > spiral.svg
+```
+
+![Rust -> Turtle -> SVG]
+(outputs/spiral.svg)
 
 ## Commands
 
@@ -27,4 +39,31 @@ pc x
 // Set pen size to (x: int)
 // eg. ps 10
 ps x
+```
+
+## How to use
+
+### From a Turtle script
+
+By default, the program reads from stdin and outputs to stdout. If you have a
+script file called 'test.turt' you can create an svg like this (unix-like
+only):
+
+```bash
+turtle-svg < test.turt > out.svg
+```
+
+Alternatively, you can specify an input and output file with '-i' and '-o'.
+
+```bash
+turtle-svg -i test.turt -o out.svg
+```
+
+### With a turtle script generator
+
+If you have a program that generates turtle script, you can simply pipe the
+output into turtle-svg:
+
+```bash
+python my-fancy-script.py | turtle-svg > outsvg
 ```
