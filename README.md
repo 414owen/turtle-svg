@@ -53,15 +53,16 @@ ps x
 
 ### From a Turtle script
 
-By default, the program reads from stdin and outputs to stdout. If you have a
-script file called 'test.turt' you can create an svg like this (unix-like
-only):
+By default, the program reads from stdin and outputs to stdout. If you  
+have a script file called 'test.turt' you can create an svg like this  
+(unix-like only):
 
 ```bash
 turtle-svg < test.turt > out.svg
 ```
 
-Alternatively, you can specify an input and output file with '-i' and '-o'.
+Alternatively, you can specify an input and output file with '-i' and  
+'-o'.
 
 ```bash
 turtle-svg -i test.turt -o out.svg
@@ -69,8 +70,8 @@ turtle-svg -i test.turt -o out.svg
 
 ### With a turtle script generator
 
-If you have a program that generates turtle script, you can simply pipe the
-output into turtle-svg:
+If you have a program that generates turtle script, you can simply pipe  
+the output into turtle-svg:
 
 ```bash
 python my-fancy-script.py | turtle-svg > out.svg
