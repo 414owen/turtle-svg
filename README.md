@@ -47,6 +47,12 @@ pc x
 // Set pen size to (x: int)
 // eg. ps 10
 ps x
+
+// Lift up pen (disables drawing)
+pu
+
+// Lower pen down (enables drawing)
+pd
 ```
 
 ## How to use
