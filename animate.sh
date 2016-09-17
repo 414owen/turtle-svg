@@ -36,7 +36,7 @@ else
     echo "Already built."
 fi
 
-if [ -f $DIR/out.mp4 ]
+if [ -f $DIR/out.mp4 ]; then
     rm $DIR/out.mp4
 fi
 
@@ -82,7 +82,7 @@ read frames
 # Praise be unto Unix pipes and complicated shell scripts
 
 { for i in `sineish $frames`; do
-    $DIR/target/release/spiral -g 2 -a $i -i 200 | $DIR/target/release/turtle-svg | convert svg: png:- 
+    $DIR/target/release/spiral -g 2 -a $i -i 270 | $DIR/target/release/turtle-svg -w 1000 -h 1000 | convert svg: png:- 
   done 
 } | ffmpeg -f image2pipe -r 30 -vcodec png -i - -qscale:v 12  -pix_fmt yuv420p -vcodec libx264 out.mp4
 
