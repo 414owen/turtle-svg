@@ -39,8 +39,14 @@ rm $DIR/out.mp4
 if ! type bc > /dev/null; then
     echo "Please install 'bc', exiting"
     exit 1
-fi
+fi 
 
+# This is the logic that makes the spiral changes slow down (to 0)
+# when the spiral reaches 90 degree angles this function produces 
+# numbers between 0 and 180 it's a sinusoidal generator, with 90 
+# being at the peak of the wave, where the direction of speed-up is 
+# flipped, to produce the same effect but in reverse, for the other
+# 90 degrees.
 pi=$(echo "scale=10; 4*a(1)" | bc -l)
 halfpi=$(echo "scale=10; $pi / 2" | bc -l)
 sineish () {
@@ -58,9 +64,21 @@ sineish () {
     done
 }
 
+echo "How many frames do you want this video to be?"
+read frames
 
-{ for i in `sineish 500`; do
+# This looks terrible, sorry, this is how it works:
+# turtle graphics are printed, which are piped into the interpreter
+# the interpreter spits out svgs
+# The svgs are converted to pngs by ImageMagick
+# The pngs are converted encoded into h.264 encoded video using FFmpeg
+
+# All this happens without writing a single frame to disk
+# Everything occurs in memory
+# Praise be unto Unix pipes and complicated shell scripts
+
+{ for i in `sineish $frames`; do
     $DIR/target/release/spiral -g 2 -a $i -i 200 | $DIR/target/release/turtle-svg | convert svg: png:- 
   done 
-} | ffmpeg -f image2pipe -r 30 -vcodec png -i - -vcodec libx264 out.mp4
+} | ffmpeg -f image2pipe -r 30 -vcodec png -i - -qscale:v 12  -pix_fmt yuv420p -vcodec libx264 out.mp4
 
