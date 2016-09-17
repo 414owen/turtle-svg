@@ -84,5 +84,5 @@ read frames
 { for i in `sineish $frames`; do
     $DIR/target/release/spiral -g 2 -a $i -i 270 | $DIR/target/release/turtle-svg -w 1000 -h 1000 | convert svg: png:- 
   done 
-} | ffmpeg -f image2pipe -r 30 -vcodec png -i - -qscale:v 12  -pix_fmt yuv420p -vcodec libx264 out.mp4
+} | ffmpeg -f image2pipe -r 30 -vcodec png -i - -c:v libx265 -preset placebo -crf 35 out.mp4
 
