@@ -36,7 +36,9 @@ else
     echo "Already built."
 fi
 
-rm $DIR/out.mp4
+if [ -f $DIR/out.mp4 ]
+    rm $DIR/out.mp4
+fi
 
 if ! type bc > /dev/null; then
     echo "Please install 'bc', exiting"
