@@ -50,7 +50,7 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
         _ => 500
     };
     let mut turtle: Turtle = Turtle {
-        position: Point { x: width / 2, y: height / 2 },
+        position: Point { x: width as f64 / 2.0, y: height as f64 / 2.0 },
         bearing: 0.0f64,
         pen: Pen {
             thickness: 1,
@@ -61,7 +61,9 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
 
     let mut input = String::new();
     in_port.read_to_string(&mut input);
-    write!(out_port, "<svg width='{}' height='{}' xmlns='http://www.w3.org/2000/svg'>", width, height);
+    write!(out_port, "<svg width='{}' height='{}' xmlns='http://www.w3.org/2000/svg'>\n", width, height);
+    let mut polyline = false;
+    let mut poly_points = Vec::new();
     for line in input.lines() {
         line_num = line_num + 1;
         let mut elems = line.split(' ');
@@ -70,30 +72,71 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
             "fd" => {
                 let start = Point { x: turtle.position.x, y: turtle.position.y };
                 turtle.position = new_pos(&turtle.position, turtle.bearing, elems.next().unwrap().parse::<i32>().unwrap());
-                let end = &turtle.position;
                 if turtle.pen.down {
-                    write!(
-                        out_port,
-                        "<line x1='{}' y1='{}' x2='{}' y2='{}' stroke='{}' stroke-width='{}' />\n",
-                        start.x, start.y, end.x, end.y, turtle.pen.color, turtle.pen.thickness
-                    );
+                    if !polyline {
+                        polyline = true;
+                        poly_points.push(start);
+                    }
+                    poly_points.push(Point { x: turtle.position.x, y: turtle.position.y } );
                 }
             },
             "lt" => turtle.bearing = turtle.bearing + elems.next().unwrap().parse::<f64>().unwrap(),
             "rt" => turtle.bearing = turtle.bearing - elems.next().unwrap().parse::<f64>().unwrap(),
-            "pu" => turtle.pen.down = false,
-            "pd" => turtle.pen.down = true,
-            "ps" => turtle.pen.thickness = elems.next().unwrap().parse::<i32>().unwrap(),
-            "pc" => turtle.pen.color = elems.next().unwrap().to_string(),
+            "pu" => {
+                turtle.pen.down = false;
+                if polyline {
+                    polyline = false;
+                    finalise_polyline(&mut poly_points, &mut out_port, &mut turtle.pen);
+                }
+            },
+            "pd" => {
+                turtle.pen.down = true
+            },
+            "ps" => {
+                turtle.pen.thickness = elems.next().unwrap().parse::<i32>().unwrap();
+                if polyline {
+                    polyline = false;
+                    finalise_polyline(&mut poly_points, &mut out_port, &mut turtle.pen);
+                }
+            },
+            "pc" => {
+                turtle.pen.color = elems.next().unwrap().to_string();
+                if polyline {
+                    polyline = false;
+                    finalise_polyline(&mut poly_points, &mut out_port, &mut turtle.pen);
+                }
+            },
             _ => {
+                if polyline {
+                    polyline = false;
+                    finalise_polyline(&mut poly_points, &mut out_port, &mut turtle.pen);
+                }
                 write!(out_port, "Invalid input on line {}:\n{}\n", line_num, line);
                 out_port.flush();
                 std::process::exit(0);
             },
         }
     }
+    if polyline {
+        polyline = false;
+        finalise_polyline(&mut poly_points, &mut out_port, &mut turtle.pen);
+    }
     write!(out_port, "</svg>\n");
     out_port.flush();
+}
+
+fn finalise_polyline(points: &mut Vec<Point>, out_port: &mut Write, pen: &mut Pen) {
+    write!(out_port, "<polyline points='");
+    {
+        let mut iter = points.iter();
+        let first = iter.next().unwrap();
+        write!(out_port, "{:.2},{:.2}", first.x, first.y);
+        for point in iter {
+            write!(out_port, " {:.2},{:.2}", point.x, point.y);
+        }
+    }
+    write!(out_port, "' stroke='{}' fill='rgba(0,0,0,0)' stroke-width='{}' />", pen.color, pen.thickness);
+    points.clear();
 }
 
 fn print_usage(program: &str, opts: Options) {
@@ -105,8 +148,8 @@ fn print_usage(program: &str, opts: Options) {
 fn new_pos(point: &Point, bearing: f64, amount: i32) -> Point {
     let dir = bearing / 180.0f64 * PI;
     Point { 
-        x: point.x + ((amount as f64 * dir.cos()) as i32),
-        y: point.y - ((amount as f64 * dir.sin()) as i32)
+        x: point.x + amount as f64 * dir.cos(),
+        y: point.y - amount as f64 * dir.sin()
     }
 }
 
@@ -122,8 +165,8 @@ fn new_pos(point: &Point, bearing: f64, amount: i32) -> Point {
 
 #[derive(Debug)]
 struct Point {
-    x: i32,
-    y: i32,
+    x: f64,
+    y: f64,
 }
 
 #[derive(Debug)]
