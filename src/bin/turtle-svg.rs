@@ -8,17 +8,20 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
     let program = args[0].clone();
     let mut opts = Options::new();
-    opts.optopt("o", "output", "set output file name", "NAME");
+    opts.optopt("o", "output", "write svg output to file", "NAME");
     opts.optopt("i", "input", "read turtle script from file", "NAME");
-    opts.optflag("h", "help", "print this help menu");
+    opts.optopt("w", "width", "set canvas width", "INT");
+    opts.optopt("h", "height", "set canvas height", "INT");
+    opts.optflag("", "help", "print this help menu");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => { m }
         Err(f) => { panic!(f.to_string()) }
     };
-    if matches.opt_present("h") {
+    if matches.opt_present("help") {
         print_usage(&program, opts);
         return;
     }
+
     init_in(matches);
 }
 
@@ -31,15 +34,21 @@ fn init_in(matches: getopts::Matches) {
 
 fn init_out<R: Read>(mut in_port: R, matches: getopts::Matches) {
     match matches.opt_str("o") {
-        Some(filename) => run(in_port, File::create(filename).expect("Couln't open output file")),
-        _ => run(in_port, io::stdout()),
+        Some(filename) => run(in_port, File::create(filename).expect("Couln't open output file"), matches),
+        _ => run(in_port, io::stdout(), matches),
     };
 }
 
-fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W) {
+fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Matches) {
     let mut line_num = 0;
-    let width = 500;
-    let height = 500;
+    let width = match matches.opt_str("w") {
+        Some(num) => num.parse::<i32>().unwrap(),
+        _ => 500
+    };
+    let height = match matches.opt_str("h") {
+        Some(num) => num.parse::<i32>().unwrap(),
+        _ => 500
+    };
     let mut turtle: Turtle = Turtle {
         position: Point { x: width / 2, y: height / 2 },
         bearing: 0.0f64,
