@@ -1,3 +1,5 @@
+#!/bin/sh
+
 echo "Testing whether you have release versions of turtle and spiral compiled"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
