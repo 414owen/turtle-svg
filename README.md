@@ -10,8 +10,7 @@ Generated with the spirals program (included), with these arguments:
 ./spiral -i 200 -l 10 -a 91 | ./turtle-svg > spiral.svg
 ```
 
-![Rust -> Turtle -> SVG]
-(http://owenowen.netsoc.ie/res/turtle/spiral.svg)
+![Rust -> Turtle -> SVG](http://owenowen.netsoc.ie/res/turtle/spiral.svg)
 
 ## To build
 
