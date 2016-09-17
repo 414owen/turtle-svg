@@ -4,10 +4,10 @@ A turtle graphics interpreter that outputs SVG
 
 ## Example
 
-Generated with the spirals program (included), with these arguments:
+Generated with the spirals program (included, found in target/release once built), with these arguments:
 
 ```bash
-./spiral -i 200 -l 10 -a 91 | ./turtle-svg > spiral.svg
+./spiral -i 270 -g 3 -a 121 | ./turtle-svg -w 1000 -h 1000 > spiral.svg
 ```
 
 ![Rust -> Turtle -> SVG](http://owenowen.netsoc.ie/res/turtle/spiral.svg)
