@@ -36,7 +36,30 @@ fi
 
 rm $DIR/out.mp4
 
-{ for i in `seq 0.0 0.1 90`; do
+if ! type bc > /dev/null; then
+    echo "Please install 'bc', exiting"
+    exit 1
+fi
+
+pi=$(echo "scale=10; 4*a(1)" | bc -l)
+halfpi=$(echo "scale=10; $pi / 2" | bc -l)
+sineish () {
+    points=$1
+    echo $points
+    step=`echo "scale=10; $pi / $points" | bc -l`
+    echo $step
+    echo $pi
+
+    for i in `seq 0 $step $halfpi`; do
+        echo `echo "scale=8; s($i) * 90" | bc -l`
+    done
+    for i in `seq $halfpi -$step 0`; do
+        echo `echo "scale=8; 180 - (s($i) * 90)" | bc -l`
+    done
+}
+
+
+{ for i in `sineish 500`; do
     $DIR/target/release/spiral -g 2 -a $i -i 200 | $DIR/target/release/turtle-svg | convert svg: png:- 
   done 
 } | ffmpeg -f image2pipe -r 30 -vcodec png -i - -vcodec libx264 out.mp4
