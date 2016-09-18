@@ -1,0 +1,8 @@
+ci 100
+pc #f00
+ci 20
+pu
+fd 100
+pd
+pc #0f0
+ci 50

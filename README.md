@@ -4,13 +4,15 @@ A turtle graphics interpreter that outputs SVG
 
 ## Example
 
-Generated with the spirals program (included, found in target/release once built), with these arguments:
+Generated with the spiral program (included, found in target/release once built), with these arguments:
 
 ```bash
 ./spiral -i 270 -g 3 -a 121 | ./turtle-svg -w 1000 -h 1000 > spiral.svg
 ```
 
 ![Rust -> Turtle -> SVG](http://owenowen.netsoc.ie/res/turtle/spiral.svg)
+
+I also made a video from 12000 values for 'angle' between 0 and 180, [here](http://derrel.net/ep/logo/logo_com.htm).
 
 ## To build
 
