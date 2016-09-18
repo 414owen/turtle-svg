@@ -4,7 +4,7 @@ A turtle graphics interpreter that outputs SVG
 
 ## Example
 
-Generated with the spiral program (included, found in target/release\ once  
+Generated with the spiral program (included, found in target/release/ once  
 built), with these arguments:
 
 ```bash
