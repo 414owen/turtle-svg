@@ -12,7 +12,7 @@ Generated with the spiral program (included, found in target/release once built)
 
 ![Rust -> Turtle -> SVG](http://owenowen.netsoc.ie/res/turtle/spiral.svg)
 
-I also made a video from 12000 values for 'angle' between 0 and 180, [here](http://derrel.net/ep/logo/logo_com.htm).
+I also made a video from 12000 values for 'angle' between 0 and 180, [here](https://www.youtube.com/watch?v=fY_KRJhCVKk).
 
 ## To build
 
@@ -29,6 +29,12 @@ This is not a forgiving interpreter. If your script is wrong, expect a line
 number, but not much else. Everything is rendered onto a 500 * 500 SVG canvas.  
 
 ```
+// Lift up pen (disables drawing)
+pu
+
+// Lower pen down (enables drawing)
+pd
+
 // Move forward (x: int) pixels
 // eg. fd 100
 fd x
@@ -49,11 +55,6 @@ pc x
 // eg. ps 10
 ps x
 
-// Lift up pen (disables drawing)
-pu
-
-// Lower pen down (enables drawing)
-pd
 ```
 
 ## How to use

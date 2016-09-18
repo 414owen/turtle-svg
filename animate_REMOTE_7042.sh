@@ -8,11 +8,7 @@ dependencies="bc ffmpeg convert cargo"
 
 for dep in $dependencies; do
     echo "Checking whether '$dep' is installed"
-<<<<<<< HEAD
-    if ! type $dep > /dev/null; then
-=======
     if type $dep > /dev/null; then
->>>>>>> e3209fc6a123d5b15c866609bb5bb31b880856a2
         echo "'$dep' not found, it is required by this script, exiting!"
         exit 1
     fi
@@ -54,14 +50,7 @@ else
 fi
 
 if [ -f $DIR/out.mp4 ]; then
-    read -p "out.mp4 already exists, overwrite it? (y/n) " -n 1 -r
-    echo    # (optional) move to a new line
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
-        rm $DIR/out.mp4
-    else
-        exit 0
-    fi
+    rm $DIR/out.mp4
 fi
 
 # This is the logic that makes the spiral changes slow down (to 0)

@@ -1,6 +1,6 @@
 ci 100
 pc #f00
-ci 20
+ci 
 pu
 fd 100
 pd
