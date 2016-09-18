@@ -120,6 +120,7 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
             },
             "ci" => {
                 if polyline {
+                    polyline = false;
                     write_polyline(&mut poly_points, &mut out_port, &mut turtle.pen);
                 }
                 write!(out_port, "<circle cx='{}' cy='{}' r='{}' fill='{}' />",

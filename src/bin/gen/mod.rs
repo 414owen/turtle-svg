@@ -17,3 +17,7 @@ pub fn left_turn(deg: f32) {
 pub fn right_turn(deg: f32) {
     println!("rt {}", deg);
 }
+
+pub fn circle(rad: i32) {
+    println!("ci {}", rad);
+}
