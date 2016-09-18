@@ -143,6 +143,7 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
     out_port.flush();
 }
 
+#[inline]
 fn get_arg(mut line_iter: &mut std::iter::Iterator<Item=&str>, line: &str, num: i32) -> f64 {
     let err = "Expected a number as an argument";
     line_iter.next().expect(&helpful_error(err, line, num))
@@ -159,7 +160,6 @@ fn write_polyline(points: &mut Vec<Point>, out_port: &mut Write, pen: &Pen) {
     write!(out_port, "<polyline points='");
     {
         let mut iter = points.iter();
-        out_port.flush(); //DEBUG
         let first = iter.next().expect("Error: polyline has no first value");
         write!(out_port, "{:.2},{:.2}", first.x, first.y);
         for point in iter {
