@@ -35,26 +35,29 @@ pu
 // Lower pen down (enables drawing)
 pd
 
-// Move forward (x: int) pixels
+// Move forward (x: float|int) pixels
 // eg. fd 100
 fd x
 
-// Turn left (x: int|float) degrees
+// Turn left (x: float|int) degrees
 // eg. lt 180
 lt x
 
-// Turn right (x int|float) degrees
+// Turn right (x float|int) degrees
 // eg. rt 45
 rt x
 
-// Set pen colour to (x: hex-string)
+// Set pen colour to (x: hex|rgb|rgba)
 // eg. pc #ffaabb
 pc x
 
-// Set pen size to (x: int)
+// Set pen size to (x: float|int)
 // eg. ps 10
 ps x
 
+// Draw circle of radius (x: float|int)
+// eg ci 100
+ci 100
 ```
 
 ## How to use
