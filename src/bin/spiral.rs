@@ -15,7 +15,7 @@ fn main() {
         Some(n) => n.parse::<i32>().unwrap(),
         _ => 100
     };
-    let mut length = 10;
+    let mut length = 0;
     let gap = match matches.opt_str("g") {
         Some(n) => n.parse::<i32>().unwrap(),
         _ => 10
@@ -24,7 +24,6 @@ fn main() {
         Some(n) => n.parse::<f32>().unwrap(),
         _ => 91.0
     };
-    gen::forward(length/2);
     for i in 0..end {
         gen::left_turn(angle);
         gen::forward(length);
