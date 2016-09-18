@@ -18,15 +18,15 @@ fn main() {
     };
     let mut length = 0;
     let mut node = false;
-    let node_rad = match matches.opt_str("g") {
-        Some(n) => n.parse::<i32>().unwrap(),
+    let node_rad = match matches.opt_str("n") {
+        Some(n) => {
+            node = true;
+            n.parse::<i32>().unwrap()
+        },
         _ => 0
     };
     let gap = match matches.opt_str("g") {
-        Some(n) =>  {
-            node = true;
-            n.parse::<i32>().unwrap()
-        }
+        Some(n) => n.parse::<i32>().unwrap(),
         _ => 10
     };
     let angle = match matches.opt_str("a") {
