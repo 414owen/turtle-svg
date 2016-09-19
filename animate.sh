@@ -8,11 +8,7 @@ dependencies="bc ffmpeg convert cargo"
 
 for dep in $dependencies; do
     echo "Checking whether '$dep' is installed"
-<<<<<<< HEAD
-    if ! type $dep > /dev/null; then
-=======
     if type $dep > /dev/null; then
->>>>>>> e3209fc6a123d5b15c866609bb5bb31b880856a2
         echo "'$dep' not found, it is required by this script, exiting!"
         exit 1
     fi
@@ -48,6 +44,9 @@ if ! $already_built; then
     echo "Attempting to compile turtle-svg and spiral"
     if cargo build --release; then
         echo "Build succesful"
+    else
+        echo "Couldn't build project, exiting!"
+        exit 1
     fi
 else 
     echo "Already built"

@@ -11,7 +11,7 @@ built), with these arguments:
 ./spiral -i 270 -g 3 -a 121 | ./turtle-svg -w 1000 -h 1000 > spiral.svg
 ```
 
-![Rust -> Turtle -> SVG](http://owenowen.netsoc.ie/res/turtle/spiral.svg)
+![Rust -> Turtle -> SVG](//414owen.github.io/res/turtle/spiral.svg)
 
 I also made a video from 12000 values for 'angle' between 0 and 180, [here](https://www.youtube.com/watch?v=fY_KRJhCVKk).
 
