@@ -75,6 +75,8 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
                       line_num
                   ));
         match cmd {
+
+            // Forward
             "fd" => {
                 let start = Point { x: turtle.position.x, y: turtle.position.y };
                 turtle.position = new_pos(
@@ -90,8 +92,27 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
                     poly_points.push(Point { x: turtle.position.x, y: turtle.position.y } );
                 }
             },
+
+            // Left Turn
             "lt" => turtle.bearing = turtle.bearing + get_arg(&mut elems, line, line_num),
+
+            // Right Turn
             "rt" => turtle.bearing = turtle.bearing - get_arg(&mut elems, line, line_num),
+
+            // Circle
+            "ci" => {
+                if polyline {
+                    polyline = false;
+                    write_polyline(&mut poly_points, &mut out_port, &mut turtle.pen);
+                }
+                write!(out_port, "<circle cx='{}' cy='{}' r='{}' fill='{}' />\n",
+                       turtle.position.x, 
+                       turtle.position.y, 
+                       get_arg(&mut elems, line, line_num),
+                       turtle.pen.color);
+            },
+
+            // Pen Up
             "pu" => {
                 if polyline {
                     polyline = false;
@@ -99,9 +120,13 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
                 }
                 turtle.pen.down = false;
             },
+
+            // Pen Down
             "pd" => {
                 turtle.pen.down = true
             },
+
+            // Pen Size
             "ps" => {
                 if polyline {
                     polyline = false;
@@ -109,6 +134,8 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
                 }
                 turtle.pen.thickness = get_arg(&mut elems, line, line_num);
             },
+
+            // Pen Color
             "pc" => {
                 if polyline {
                     write_polyline(&mut poly_points, &mut out_port, &mut turtle.pen);
@@ -118,17 +145,19 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
                     .expect(&helpful_error("Expected a string as argument to 'pc'", line, line_num))
                     .to_string();
             },
-            "ci" => {
+
+            // Set Position
+            "sp" => {
                 if polyline {
-                    polyline = false;
                     write_polyline(&mut poly_points, &mut out_port, &mut turtle.pen);
+                    polyline = false;
                 }
-                write!(out_port, "<circle cx='{}' cy='{}' r='{}' fill='{}' />",
-                       turtle.position.x, 
-                       turtle.position.y, 
-                       get_arg(&mut elems, line, line_num),
-                       turtle.pen.color);
-            },
+                turtle.position = Point {
+                    x: get_arg(&mut elems, line, line_num),
+                    y: get_arg(&mut elems, line, line_num)
+                };
+            }
+
             _ => {
                 write!(out_port, "Invalid input on line {}:\n{}\n", line_num, line);
                 out_port.flush();
@@ -167,7 +196,7 @@ fn write_polyline(points: &mut Vec<Point>, out_port: &mut Write, pen: &Pen) {
             write!(out_port, " {:.2},{:.2}", point.x, point.y);
         }
     }
-    write!(out_port, "' stroke='{}' fill='rgba(0,0,0,0)' stroke-width='{}' />", pen.color, pen.thickness);
+    write!(out_port, "' stroke='{}' fill='rgba(0,0,0,0)' stroke-width='{}' />\n", pen.color, pen.thickness);
     points.clear();
 }
 
