@@ -121,4 +121,3 @@ done
     $DIR/target/release/spiral -g 2 -a $i -i 270 | $DIR/target/release/turtle-svg -w 1000 -h 1000 | convert svg: png:- 
   done
 } | ffmpeg -hwaccel vaapi -f image2pipe -r $framerate -vcodec png -i - -c:v libx264 -pix_fmt yuv420p -preset medium -crf 18 out.mp4
-
