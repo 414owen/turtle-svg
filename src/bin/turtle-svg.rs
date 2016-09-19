@@ -65,7 +65,6 @@ fn run<R: Read, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Mat
     write!(out_port, "<svg width='{}' height='{}' xmlns='http://www.w3.org/2000/svg'>\n", width, height);
     let mut polyline = false;
     let mut poly_points = Vec::new();
-    let NEEDED_NUM = "Expected a number as an argument";
     for line in input.lines() {
         line_num = line_num + 1;
         let mut elems = line.split(' ');
