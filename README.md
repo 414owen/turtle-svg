@@ -4,16 +4,28 @@ A turtle graphics interpreter that outputs SVG
 
 ## Example
 
+### Spiral
+
 Generated with the spiral program (included, found in target/release/ once  
-built), with these arguments:
+built), supports flags for setting the iterations, the vertex angle, and the gap between lines (calculated based on the spiral produced at an angle of 90).
 
 ```bash
 ./spiral -i 270 -g 3 -a 121 | ./turtle-svg -w 1000 -h 1000 > spiral.svg
 ```
 
-![Rust -> Turtle -> SVG](http://owenowen.netsoc.ie/res/turtle/spiral.svg)
+![An interesting spiral made with Turtle-SVG](http://owenowen.netsoc.ie/res/turtle/spiral.svg)
 
 I also made a video from 12000 values for 'angle' between 0 and 180, [here](https://www.youtube.com/watch?v=fY_KRJhCVKk).
+
+### Tree
+
+The tree program supports setting a leaf color, a branch color, a branching factor, a branch angle and a number of iterations.
+
+```bash
+./target/release/tree -c -f 0.0,0.5,0.7 -b 5 -i 6 -a 25 | ./target/release/turtle-svg > out.svg
+```
+
+![A coloured tree made with Turtle-SVG](https://owenowen.netsoc.ie/res/turtle/tree.svg)
 
 ## To build
 

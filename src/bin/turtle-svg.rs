@@ -7,7 +7,6 @@ use std::string::String;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
-    let program = args[0].clone();
     let mut opts = Options::new();
     opts.optopt("o", "output", "write svg output to file", "NAME");
     opts.optopt("i", "input", "read turtle script from file", "NAME");
@@ -19,7 +18,7 @@ fn main() {
         Err(f) => { panic!(f.to_string()) }
     };
     if matches.opt_present("help") {
-        print_usage(&program, opts);
+        print_usage(&args[0].clone(), opts);
         return;
     }
 
