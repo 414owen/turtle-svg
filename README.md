@@ -19,7 +19,7 @@ I also made a video from 12000 values for 'angle' between 0 and 180, [here](http
 
 ### Tree
 
-The tree program supports setting a leaf color, a branch color, a branching factor, a branch angle and a number of iterations.
+The tree program supports setting a leaf color, a branch color, a (starting) branch length, a branching factor, a branch angle, a branch ratio, and a number of iterations.
 
 ```bash
 ./target/release/tree -c -f 0.0,0.5,0.7 -b 5 -i 6 -a 25 | ./target/release/turtle-svg > out.svg
