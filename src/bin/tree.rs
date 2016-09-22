@@ -16,8 +16,8 @@ fn main() {
     opts.optflag("", "continuous", "enable continuous colour mode");
     opts.optopt("s", "starting-color", "set starting colour", "R,G,B");
     opts.optopt("f", "final-color", "set final color", "R,G,B");
+    opts.optopt("m", "starting-point", "set the starting point of the tree", "X,Y");
     opts.optflag("h", "help", "print out usage information");
-
 
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -57,6 +57,15 @@ fn main() {
         Some(s) => parse_col(&s),
         _ => Rgb::new(0.0,0.6,0.0)
     };
+    match matches.opt_str("m") {
+        Some(p) => {
+            let mut args = p.split(",");
+            let x = args.next().unwrap().parse::<f64>().unwrap();
+            let y = args.next().unwrap().parse::<f64>().unwrap();
+            gen::set_position(x, y);
+        }
+        _ => ()
+    }
 
     gen::left_turn(90.0);
     branch_me(length, 1, iterations, branches, angle, ratio, color, continuous, starting_color, final_color);
