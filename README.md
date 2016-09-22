@@ -31,7 +31,7 @@ The tree program supports setting a leaf color, a branch color, a (starting) bra
 ./target/release/tree -c -f 0.0,0.5,0.7 -b 5 -i 6 -a 25 | ./target/release/turtle-svg > out.svg
 ```
 
-![A blue-leafed tree made with Turtle-SVG](http://owenowen.netsoc.ie/res/turtle/tree-blue.svg)
+![A blue-leafed tree made with Turtle-SVG](http://owenowen.netsoc.ie/res/turtle/tree-blue-1.svg)
 
 ## To build
 
