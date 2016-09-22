@@ -22,10 +22,16 @@ I also made a video from 12000 values for 'angle' between 0 and 180, [here](http
 The tree program supports setting a leaf color, a branch color, a (starting) branch length, a branching factor, a branch angle, a branch ratio, and a number of iterations.
 
 ```bash
+./target/release/tree -c -f 0.0,0.7,0.5 -b 4 -i 6 -a 25 -l 130 | ./target/release/turtle-svg -w 1000 -h 1000 > out.svg
+```
+
+![A blue-leafed tree made with Turtle-SVG({http://owenowen.netsoc.ie/res/turtle/tree-green.svg)
+
+```bash
 ./target/release/tree -c -f 0.0,0.5,0.7 -b 5 -i 6 -a 25 | ./target/release/turtle-svg > out.svg
 ```
 
-![A colored tree made with Turtle-SVG](http://owenowen.netsoc.ie/res/turtle/tree.svg)
+![A blue-leafed  made with Turtle-SVG](http://owenowen.netsoc.ie/res/turtle/tree-blue.svg)
 
 ## To build
 
