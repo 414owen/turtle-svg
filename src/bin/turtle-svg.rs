@@ -42,6 +42,14 @@ fn init_in(matches: getopts::Matches) {
     };
 }
 
+/*
+ * Input and output occur concurrently, through BufRead (since today, whoo!).
+ * To test this, you can run turtle-svg without any arguments, and just type in
+ * 'ci 100'. Output will appear immediately. This test will work on lines, but
+ * output will only appear after a command other than 'lt', 'rt' or 'fd', as they
+ * accumulate data in order to produce the minimal output.
+ */
+
 fn init_out<R: BufRead>(mut in_port: R, matches: getopts::Matches) {
     match matches.opt_str("o") {
         Some(filename) => {
