@@ -54,7 +54,7 @@ fn init_out<R: BufRead>(mut in_port: R, matches: getopts::Matches) {
 }
 
 /*
- * TODO: (maybe), move logic behins a switch on an enum, as opposed to the input
+ * TODO: (maybe), move logic behind a switch on an enum, as opposed to the input
  * strings. That way, we could write the SVG directly from rust, without piping turtle
  * commands in via the shell. On the other hand, I do enjoy piping the program in via
  * the shell. It's just cool.
@@ -217,7 +217,7 @@ fn helpful_error(err: &str, line: &str, num: i32) -> String {
 }
 
 /*
- * Recently ran some output through SVGO. Turns out paths are more consice than
+ * Recently ran some output through SVGO. Turns out paths are more concise than
  * polylines.
  * TODO: Polylines -> Paths
  *
