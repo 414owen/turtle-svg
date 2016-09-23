@@ -235,16 +235,6 @@ fn new_pos(point: &Point, bearing: f64, amount: f64) -> Point {
     }
 }
 
-// enum Cmd {
-// PenUp,
-// PenDown,
-// PenSize,
-// PenColor,
-// Forward,
-// LeftTurn,
-// RightTurn,
-// }
-
 #[derive(Debug)]
 struct Point {
     x: f64,
