@@ -7,7 +7,7 @@ fn main() {
     let mut opts = getopts::Options::new();
     opts.optopt("g",
                 "gap",
-                "set the gap between parallel lines, affects non-parallel lines as well",
+                "set the gap between lines, gap is calculated based on the gap between parallel lines in a four-angle spirangle",
                 "FLOAT");
     opts.optopt("a",
                 "angle",
