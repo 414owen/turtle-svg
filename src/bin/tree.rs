@@ -157,8 +157,7 @@ fn branch_me(length: f64,
 }
 
 fn print_usage(program: &str, opts: Options) {
-    let brief = format!("Usage: {} [options]\nPlease not that all color channels are between 0.0 \
-                         and 1.0, for example R,G,B = 0.0,0.4,0.5",
+    let brief = format!("Usage: {} [options]",
                         program);
     print!("{}", opts.usage(&brief));
 }

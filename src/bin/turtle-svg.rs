@@ -43,7 +43,7 @@ fn init_in(matches: getopts::Matches) {
 }
 
 /*
- * Input and output occur concurrently, through BufRead (since today, whoo!).
+ * Input and output occur concurrently, through BufRead (didn't used to, whoo!).
  * To test this, you can run turtle-svg without any arguments, and just type in
  * 'ci 100'. Output will appear immediately. This test will work on lines, but
  * output will only appear after a command other than 'lt', 'rt' or 'fd', as they
