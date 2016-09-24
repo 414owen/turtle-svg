@@ -1,8 +1,10 @@
 extern crate getopts;
 mod gen;
 use getopts::Options;
+use std::ops::Rem;
 
-/* TODO: (maybe) Add an option for skewing all angles towards left or right.
+/* 
+ * TODO: (maybe) Add an option for skewing all angles towards left or right.
  * This will hopefully produce output of a tree swaying in the wind.
  * Would also allow me to produce an animation similar to the spiral one (and reuse
  * pretty much all of the animation script)
@@ -16,8 +18,7 @@ fn main() {
      * Still not entirely sold on getopts. It seems to check for defined parameters
      * (and fail if they don't exist) at runtime. Also, it won't let me define
      * the single-dash notation with more than one character. For example, I would
-     * like to be able to specify --branch-color as -bc, but it won't let me. This
-     * might be standard, but I have seen it before.
+     * like to be able to specify --branch-color as -bc, but it won't let me.
      *
      * TODO: Check the GNU standard for single-dash multiple-character argument
      * specification (see above).
@@ -30,7 +31,7 @@ fn main() {
     opts.optopt("a",
                 "angle",
                 "set the angle (in degrees) between branches",
-                "FLOAT|INT");
+                "FLOAT");
     opts.optopt("b",
                 "branches",
                 "set the branching factor of the tree (the number of branches per level of the \
@@ -39,11 +40,11 @@ fn main() {
     opts.optopt("l",
                 "length",
                 "set the length of the trunk (branch lengths are calculated from this)",
-                "FLOAT|INT");
+                "FLOAT");
     opts.optopt("r",
                 "ratio",
                 "set the ratio of one branch to another",
-                "FLOAT|INT");
+                "FLOAT");
     opts.optflag("c", "color", "enable colorization");
     opts.optopt("", "branch-color", "set branch colour", "COL");
     opts.optopt("", "leaf-color", "set leaf color", "COL");
@@ -51,6 +52,7 @@ fn main() {
                 "starting-point",
                 "set the starting point of the tree",
                 "X,Y");
+    opts.optopt("s", "skew", "set the amount to skew tree to the right", "DEG");
     opts.optflag("h", "help", "print out usage information");
 
     let matches = match opts.parse(&args[1..]) {
@@ -90,6 +92,10 @@ fn main() {
         Some(s) => s,
         _ => "#000".to_string(),
     };
+    let skew = match matches.opt_str("s") {
+        Some(n) => n.parse::<f64>().unwrap(),
+        _ => 0.0,
+    };
     match matches.opt_str("p") {
         Some(p) => {
             let mut args = p.split(",");
@@ -99,25 +105,35 @@ fn main() {
         }
         _ => (),
     }
+    let total_angle = angle * (branches - 1) as f64;
+    let half_angle = total_angle / 2.0;
 
     gen::left_turn(90.0);
     branch_me(length,
+              90.0,
+              skew,
               1,
               iterations,
               branches,
               angle,
+              total_angle,
+              half_angle,
               ratio,
               color,
               &starting_color,
               &final_color);
 }
 
-#[inline]
+#[inline(always)]
 fn branch_me(length: f64,
+             bearing: f64,
+             skew: f64,
              iteration: i32,
              max: i32,
              branches: i32,
              angle: f64,
+             total_angle: f64,
+             half_angle: f64,
              ratio: f64,
              color: bool,
              starting_color: &str,
@@ -129,22 +145,32 @@ fn branch_me(length: f64,
             gen::pen_color(starting_color);
         }
     }
+    let mut bearing = if bearing > 0.0 {bearing.rem(360.0)} else {(360.0 + bearing.rem(360.0)).rem(360.0)};
+    //println!("BEARING! {}", bearing);
+    let skew_ang = skew * bearing.to_radians().sin();
+    //println!("SKEW! {}", skew_ang);
+    gen::right_turn(skew_ang);
+    bearing -= skew_ang;
     gen::forward(length);
     if iteration < max {
-        let total_angle = angle * (branches - 1) as f64;
-        let half_angle = total_angle / 2.0;
         gen::left_turn(half_angle);
+        bearing += half_angle;
         for _ in 0..branches {
             branch_me(length * ratio,
+                      bearing - skew_ang,
+                      skew,
                       iteration + 1,
                       max,
                       branches,
                       angle,
+                      total_angle,
+                      half_angle,
                       ratio,
                       color,
                       starting_color,
                       final_color);
             gen::right_turn(angle);
+            bearing -= angle;
         }
         gen::left_turn(angle);
         gen::left_turn(half_angle);
@@ -154,6 +180,8 @@ fn branch_me(length: f64,
     gen::forward(length);
     gen::pen_down();
     gen::left_turn(180.0);
+    //println!("UNSKEW!");
+    gen::left_turn(skew_ang);
 }
 
 fn print_usage(program: &str, opts: Options) {
