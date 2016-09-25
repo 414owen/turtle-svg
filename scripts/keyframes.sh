@@ -45,7 +45,7 @@
 
 pi=$(echo "scale=10; 4*a(1)" | bc -l)
 half_pi=$(echo "scale=10; $pi / 2" | bc -l)
-three_quarters_pi=`echo "scale=10; $pi + $half_pi" | bc -l`
+one_and_a_half_pi=`echo "scale=10; $pi + $half_pi" | bc -l`
 two_pi=$(echo "scale=10; 8*a(1)" | bc -l)
 
 points=$1
@@ -55,8 +55,8 @@ keyframes=(`echo ${keyframe_str[*]}`)
 keyframe_num=${#keyframes[@]}
 middle_keyframes=$((($keyframe_num - 4) / 3))
 
-last_keyframe=${keyframes[1]}
-curve_out=${keyframes[2]}
+last_keyframe=${keyframes[0]}
+curve_out=${keyframes[1]}
 points_between_frames=`echo "scale=10; $points / $(((($keyframe_num - 4) / 3) + 1))" | bc -l`
 
 function interpolate {
@@ -75,24 +75,23 @@ function interpolate {
 
     if $cout; then
         if $cin; then
-            for i in `seq $half_pi $pi_step $three_quarters_pi`; do
-                echo `echo "scale=10; s($i) * $half_diff + $midpoint" | bc -l` 
+            for i in `seq $half_pi $pi_step $one_and_a_half_pi`; do
+                echo `echo "scale=10; s($i) * (0 - $half_diff) + $midpoint" | bc -l` 
             done
         else
-            for i in `seq $three_quarters_pi $half_pi_step $two_pi`; do
-                echo `echo "scale=10; s($i) * $diff + $midpoint" | bc -l`
+            for i in `seq $one_and_a_half_pi $half_pi_step $two_pi`; do
+                echo `echo "scale=10; s($i) * $diff + $this" | bc -l`
             done
         fi
     else 
         if $cin; then
-            for i in `seq $half_pi $half_pi_step $three_quarters_pi`; do
-                echo `echo "scale=10; s($i) * $diff + $midpoint" | bc -l`
+            for i in `seq 0 $half_pi_step $half_pi`; do
+                echo `echo "scale=10; s($i) * $diff + $last" | bc -l`
             done
         else
             lin_step=`echo "scale=10; $diff / $pts" | bc -l`
-            for i in `seq 0 $lin_step $diff`; do
-                echo "$diff, $pts"
-                echo `echo "scale=10; $last + $lin_step" | bc -l`
+            for i in `seq $last $lin_step $this`; do
+                echo $i
             done
         fi
     fi
