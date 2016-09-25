@@ -3,13 +3,13 @@
 #  ---------------
 #   Keyframes
 #  ---------------
-#
+
 # This script takes in keyframes, and outputs numbers. It supports curved input
 # and output of keyframes. The first argument is the amount of points to
-# generate, the second is an array of keyframes. All keyframes will have the
-# same amount of points between them, so if you want smoothness, distribute
-# your keyframes evenly.
-#
+# generate, the second is an array of keyframes (as a string). All keyframes
+# will have the same amount of points between them, so if you want smoothness,
+# distribute your keyframes evenly.
+
 # The following example produces discrete points that form this curve:
 #
 #   50 |-------------------------------------------|   
@@ -34,7 +34,7 @@
 #      |                     |        *****        |   
 #  -50 |-------------------------------------------|   
 #      0                    100                   200
-#
+
 # Points: 200
 # Keyframes:        # Newlines added for clarity
 # "0 false          # Starting point 0, do not curve on way out
@@ -55,8 +55,8 @@ keyframes=(`echo ${keyframe_str[*]}`)
 keyframe_num=${#keyframes[@]}
 middle_keyframes=$((($keyframe_num - 4) / 3))
 
-last_keyframe=$keyframes[1]
-curve_out=$keyframes[2]
+last_keyframe=${keyframes[1]}
+curve_out=${keyframes[2]}
 points_between_frames=`echo "scale=10; $points / $(((($keyframe_num - 4) / 3) + 1))" | bc -l`
 
 function interpolate {
@@ -91,6 +91,7 @@ function interpolate {
         else
             lin_step=`echo "scale=10; $diff / $pts" | bc -l`
             for i in `seq 0 $lin_step $diff`; do
+                echo "$diff, $pts"
                 echo `echo "scale=10; $last + $lin_step" | bc -l`
             done
         fi
@@ -105,4 +106,4 @@ for index in `seq 1 $middle_keyframes`; do
     curve_out=${keyframes[$((($index * 3) + 1))]}
 done
 
-interpolate $last_keyframe $curve_out ${keyframes[$keyframe_num]} ${keyframes[$(($keyframe_num - 1))]} $points_between_frames
+interpolate $last_keyframe $curve_out ${keyframes[$(($keyframe_num - 1))]} ${keyframes[$(($keyframe_num - 2))]} $points_between_frames
