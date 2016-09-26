@@ -22,6 +22,6 @@ echo "What color would you like your branches to be? (in hex, eg. '#963')"
 read branch_color
 
 { for i in $KEYFRAMES; do
-    $DIR/../target/release/tree -c --leaf-color $leaf_color --branch-color $branch_color -b 6 -i 6 -a 25 -l 230 -p 960,1080 -s $i | $DIR/../target/release/turtle-svg -w 1000 -h 1000 | convert svg: png:- 
+    $DIR/../target/release/tree -c --leaf-color $leaf_color --branch-color $branch_color -b 6 -i 6 -a 25 -l 230 -p 960,1080 -s $i | $DIR/../target/release/turtle-svg -w 1920 -h 1080 | convert svg: png:- 
   done
 } | ffmpeg -hwaccel vaapi -f image2pipe -r $FRAMERATE -vcodec png -i - -c:v libx264 -pix_fmt yuv420p -preset medium -crf 18 ./../out.mp4
