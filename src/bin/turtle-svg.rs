@@ -261,7 +261,7 @@ fn write_polyline(points: &Vec<Point>, out_port: &mut Write, pen: &Pen) {
             }
         }
         write!(out_port,
-               "' stroke='{}' fill='rgba(0,0,0,0)' stroke-width='{:.2}' />\n",
+               "' stroke='{}' stroke-width='{:.2}' />\n",
                pen.color,
                pen.thickness);
     }
