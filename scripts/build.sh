@@ -35,7 +35,7 @@ if ! $already_built; then
         exit 1
     fi
 else 
-    ./color.sh "Project already built!" 2
+    $DIR/color.sh "Project already built!" 2
 fi
 
 exit 0
