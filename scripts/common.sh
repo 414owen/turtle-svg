@@ -24,7 +24,7 @@ echo "What animation would you like to produce?"
 MODES="Spiral Tree"
 select mode in $MODES; do
     if [ "$mode" = "Tree" ]; then
-        ./tree.sh
+        ./tree.sh $frames $framerate $DIR
         break
     elif [ "$mode" = "Spiral" ]; then
         ./spiral.sh $frames $framerate $DIR
