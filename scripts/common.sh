@@ -27,7 +27,7 @@ select mode in $MODES; do
         ./tree.sh
         break
     elif [ "$mode" = "Spiral" ]; then
-        ./spiral.sh
+        ./spiral.sh $frames $framerate $DIR
         break
     else
         clear
