@@ -15,6 +15,8 @@ if [ -f $DIR/../out.mp4 ]; then
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             rm $DIR/../out.mp4
             exit 0
+        else
+            exit 1
         fi
     else
         exit 1
