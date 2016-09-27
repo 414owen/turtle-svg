@@ -33,6 +33,8 @@ The tree program supports setting a leaf color, a branch color, a (starting) bra
 
 ![A blue-leafed tree made with Turtle-SVG](http://owenowen.netsoc.ie/res/turtle/tree-blue-4.svg)
 
+I generated a video of one of these seeming to sway in the wind [here](https://www.youtube.com/watch?v=7hOF8Ei-ys4)
+
 ## To build
 
 ```bash
