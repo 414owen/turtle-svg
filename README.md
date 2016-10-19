@@ -64,7 +64,7 @@ fd x
 // eg. lt 180
 lt x
 
-// Turn right (x float|int) degrees
+// Turn right (x: float|int) degrees
 // eg. rt 45
 rt x
 
