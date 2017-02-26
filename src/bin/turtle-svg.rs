@@ -12,6 +12,7 @@ fn main() {
     opts.optopt("i", "input", "read turtle script from file", "NAME");
     opts.optopt("w", "width", "set canvas width", "INT");
     opts.optopt("h", "height", "set canvas height", "INT");
+    opts.optflag("n", "no-crop", "disables automatic cropping based on content dimensions");
     opts.optflag("", "help", "print this help menu");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -206,6 +207,7 @@ fn run<R: BufRead, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::
 
 /*
  * Still not entirely sure whether this should be inlined.
+ * Caching is important.
  * TODO: Run some benchmarks
  */
 
@@ -243,7 +245,7 @@ fn write_polyline(points: &Vec<Point>, out_port: &mut Write, pen: &Pen) {
         let point1 = iter.next().unwrap();
         let point2 = iter.next().unwrap();
         write!(out_port,
-               "<line x1='{:.2}' y1='{:.2}' x2='{:.2}' y2='{:.2}' stroke='{}' stroke-width='{:.2}' \
+               "<line x1='{:.2}' y1='{:.2}' x2='{:.2}' y2='{:.2}' stroke='{}' stroke-width='{:.2}' fill 'none'\
                 />",
                point1.x,
                point1.y,
@@ -252,7 +254,7 @@ fn write_polyline(points: &Vec<Point>, out_port: &mut Write, pen: &Pen) {
                pen.color,
                pen.thickness);
     } else {
-        write!(out_port, "<polyline points='");
+        write!(out_port, "<polyline fill='none' points='");
         {
             let first = iter.next().expect("Error: polyline has no first value");
             write!(out_port, "{:.2},{:.2}", first.x, first.y);
