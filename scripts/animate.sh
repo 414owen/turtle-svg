@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if ! $DIR/dependencies.sh $DIR; then
@@ -34,5 +34,3 @@ select mode in $MODES; do
         echo "Invalid option"
     fi
 done
-
-

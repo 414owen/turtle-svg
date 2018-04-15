@@ -1,8 +1,4 @@
-#!/bin/sh
-
-#---------------
-# Dependencies
-#---------------
+#!/usr/bin/env bash
 
 dependencies="bc ffmpeg convert cargo"
 DIR=$1

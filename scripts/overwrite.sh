@@ -1,8 +1,4 @@
-#!/bin/bash
-
-#---------------
-# Overwrite
-#---------------
+#!/usr/bin/env bash
 
 DIR=$1
 
@@ -21,6 +17,6 @@ if [ -f $DIR/../out.mp4 ]; then
     else
         exit 1
     fi
-else 
+else
     $DIR/color.sh "out.mp4 not found" 2
 fi

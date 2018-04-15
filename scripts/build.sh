@@ -1,8 +1,4 @@
-#!/bin/bash
-
-#---------------
-# Builds
-#---------------
+#!/usr/bin/env bash
 
 echo "Testing for builds"
 

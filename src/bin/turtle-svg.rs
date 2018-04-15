@@ -26,13 +26,6 @@ fn main() {
     init_in(matches);
 }
 
-/*
- * By using init_in and init_out, there's no runtime cost (in terms of O notation)
- * of switching between input and output types, there are no check at runtime, and 
- * the ports are even statically dispatched, so there's no heap allocation even 
- * though we're using ports with differing sizes.
- */
-
 fn init_in(matches: getopts::Matches) {
     match matches.opt_str("i") {
         Some(filename) => {
@@ -42,14 +35,6 @@ fn init_in(matches: getopts::Matches) {
         _ => init_out(BufReader::new(io::stdin()), matches),
     };
 }
-
-/*
- * Input and output occur concurrently, through BufRead (didn't used to, whoo!).
- * To test this, you can run turtle-svg without any arguments, and just type in
- * 'ci 100'. Output will appear immediately. This test will work on lines, but
- * output will only appear after a command other than 'lt', 'rt' or 'fd', as they
- * accumulate data in order to produce the minimal output.
- */
 
 fn init_out<R: BufRead>(mut in_port: R, matches: getopts::Matches) {
     match matches.opt_str("o") {
@@ -65,8 +50,7 @@ fn init_out<R: BufRead>(mut in_port: R, matches: getopts::Matches) {
 /*
  * TODO: (maybe), move logic behind a switch on an enum, as opposed to the input
  * strings. That way, we could write the SVG directly from rust, without piping turtle
- * commands in via the shell. On the other hand, I do enjoy piping the program in via
- * the shell. It's just cool.
+ * commands in via the shell.
  */
 
 fn run<R: BufRead, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::Matches) {
@@ -97,10 +81,6 @@ fn run<R: BufRead, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::
            height);
     let mut polyline = false;
     let mut poly_points = Vec::new();
-
-    /*
-     * Macros are sweet.
-     */
 
     macro_rules! end_polyline {
         () => {
@@ -205,13 +185,6 @@ fn run<R: BufRead, W: Write>(mut in_port: R, mut out_port: W, matches: getopts::
     out_port.flush();
 }
 
-/*
- * Still not entirely sure whether this should be inlined.
- * Caching is important.
- * TODO: Run some benchmarks
- */
-
-#[inline]
 fn get_arg(mut line_iter: &mut std::iter::Iterator<Item = &str>, line: &str, num: i32) -> f64 {
     let err = "Expected a number as an argument";
     line_iter.next()
@@ -235,8 +208,6 @@ fn helpful_error(err: &str, line: &str, num: i32) -> String {
  * It's much more efficient to write x1='89' than x1=`89.00', however rust, as of 
  * 23/09/2016, defines no formatting arguments to not print trailing zeros.
  * I bumped an RFC for this at: https://github.com/rust-lang/rfcs/issues/844
- * Will continue to participate, might try to write the canonical implementation
- * myself.
  */
 
 fn write_polyline(points: &Vec<Point>, out_port: &mut Write, pen: &Pen) {
@@ -245,7 +216,7 @@ fn write_polyline(points: &Vec<Point>, out_port: &mut Write, pen: &Pen) {
         let point1 = iter.next().unwrap();
         let point2 = iter.next().unwrap();
         write!(out_port,
-               "<line x1='{:.2}' y1='{:.2}' x2='{:.2}' y2='{:.2}' stroke='{}' stroke-width='{:.2}' fill 'none'\
+               "<line x1='{:.2}' y1='{:.2}' x2='{:.2}' y2='{:.2}' stroke='{}' stroke-width='{:.2}' fill='none'\
                 />",
                point1.x,
                point1.y,

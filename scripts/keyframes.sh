@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  ---------------
 #   Keyframes
@@ -69,7 +69,7 @@ function interpolate {
     diff=`echo "scale=10; $this - $last" | bc -l`
     half_diff=`echo "scale=10; $diff / 2" | bc -l`
     midpoint=`echo "scale=10; $half_diff + $last" | bc -l`
-    
+
     pi_step=`echo "scale=10; $pi / $pts" | bc -l`
     half_pi_step=`echo "scale=10; $half_pi / $pts" | bc -l`
 

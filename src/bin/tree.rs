@@ -3,26 +3,9 @@ mod gen;
 use getopts::Options;
 use std::ops::Rem;
 
-/* 
- * TODO: (maybe) Add an option for skewing all angles towards left or right.
- * This will hopefully produce output of a tree swaying in the wind.
- * Would also allow me to produce an animation similar to the spiral one (and reuse
- * pretty much all of the animation script)
- */
-
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let mut opts = getopts::Options::new();
-
-    /*
-     * Still not entirely sold on getopts. It seems to check for defined parameters
-     * (and fail if they don't exist) at runtime. Also, it won't let me define
-     * the single-dash notation with more than one character. For example, I would
-     * like to be able to specify --branch-color as -bc, but it won't let me.
-     *
-     * TODO: Check the GNU standard for single-dash multiple-character argument
-     * specification (see above).
-     */
 
     opts.optopt("i",
                 "iterations",
@@ -146,9 +129,7 @@ fn branch_me(length: f64,
         }
     }
     let mut bearing = if bearing > 0.0 {bearing.rem(360.0)} else {(360.0 + bearing.rem(360.0)).rem(360.0)};
-    //println!("BEARING! {}", bearing);
     let skew_ang = skew * bearing.to_radians().sin();
-    //println!("SKEW! {}", skew_ang);
     gen::right_turn(skew_ang);
     bearing -= skew_ang;
     gen::forward(length);
@@ -180,7 +161,6 @@ fn branch_me(length: f64,
     gen::forward(length);
     gen::pen_down();
     gen::left_turn(180.0);
-    //println!("UNSKEW!");
     gen::left_turn(skew_ang);
 }
 

@@ -1,18 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 FRAMES=$1
 FRAMERATE=$2
 DIR=$3
-
-# This looks terrible, sorry, this is how it works:
-# Turtle graphics are printed, which are piped into the interpreter
-# The interpreter spits out svgs
-# The svgs are converted to pngs by ImageMagick
-# The pngs are encoded into h.264 encoded video using FFmpeg
-
-# All this happens without writing a single frame to disk
-# Everything occurs in memory (or swap, if you need it)
-# Praise be unto Unix pipes and complicated shell scripts
 
 read -e -p "What color would you like your leaves to be? " -i "#494" leaf_color
 read -e -p "What color would you like your branches to be? " -i "#963" branch_color
